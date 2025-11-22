@@ -3,7 +3,7 @@ import java.util.*;
 public class FIFOPageReplacementLab {
 
     /**
-     * TODO 1: Implement FIFO Page Replacement Algorithm
+     * Implement FIFO Page Replacement Algorithm
      *
      * Simulates FIFO page replacement for a given reference string and number of frames.
      * Returns an array: [pageFaults, pageHits]
@@ -39,9 +39,11 @@ public class FIFOPageReplacementLab {
         int pageFaults = 0;
         int pageHits = 0;
 
-        // TODO 1: Implement FIFO algorithm here
+        // Implement FIFO algorithm here
         // Queue<Integer> queue = new LinkedList<>();
         // Set<Integer> pagesInMemory = new HashSet<>();
+        Queue<Integer> memoryRAM = new LinkedList<>();
+        Set<Integer> pagesInMemory = new HashSet<>();
 
         // for (int page : referenceString) {
         //     if (pagesInMemory.contains(page)) {
@@ -54,6 +56,23 @@ public class FIFOPageReplacementLab {
         //         // Add new page
         //     }
         // }
+        for(int page: referenceString) {
+           if(pagesInMemory.contains(page)) {
+              //already in RAM. No page fault
+              pageHits++;
+           } 
+           else {
+               pageFaults++;
+               //go into memory and add it to RAM.
+               //if RAM is full remove first one inputted
+               if(memoryRAM.size() == numFrames) {
+                  int remove = memoryRAM.poll();
+                  pagesInMemory.remove(remove);
+               }
+               memoryRAM.offer(page);
+               pagesInMemory.add(page);
+           }
+        }
 
         return new int[]{pageFaults, pageHits};
     }
